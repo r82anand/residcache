@@ -1,0 +1,47 @@
+Creating a RedisCluster 
+
+ 
+
+Ref: https://medium.com/commencis/creating-redis-cluster-using-docker-67f65545796d 
+
+ 
+
+Step 1: pull the latest version of redis 
+
+$> docker pull redis 
+
+ 
+
+Step 2: Create a network  
+
+$> docker network create red_cluster 
+
+ 
+
+Step 3: Create a basic redis config file. 
+
+$> pwd 
+
+/home/anands/work/redis 
+
+$> sudo vim cluster-config.conf 
+
+ 
+
+port 6379 
+cluster-enabled yes 
+cluster-config-file nodes.conf 
+cluster-node-timeout 5000 
+appendonly yes 
+
+ 
+
+Step 4: Create Redis cluster with the above configurt 
+
+docker run -d -v $PWD/cluster-config.conf:/usr/local/etc/redis/redis.conf  --name redis-1 --net  red_cluster redis redis-server /usr/local/etc/redis/redis.conf 
+
+ 
+
+docker inspect -f '{{ (index .NetworkSettings.Networks "red_cluster").IPAddress }}' redis-1 
+
+ 

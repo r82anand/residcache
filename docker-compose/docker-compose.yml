@@ -1,0 +1,35 @@
+version: '2.1'
+
+services:
+  ikubedb:
+    image: mariadb
+    ports:
+      - 3306:3306
+      - 33060:33060
+    expose:
+      - "3306"
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+      MYSQL_DATABASE: "databas"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+  employee-service:
+    image: r82anand/empservice
+    depends_on:
+      ikubedb:
+        condition: service_healthy
+    environment:
+      - MYSQL_DB_HOSTNAME=mysql
+      - MYSQL_DB_USERNAME=empadmin
+      - ENV_MYSQL_DB_PASSWORD=empadminpswd
+      - MYSQL_DB_NAME=employees
+    ports:
+      - 8090:8090
+    links:
+      - ikubedb
+
+
