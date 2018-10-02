@@ -17,7 +17,7 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-  employee-service:
+  empservice:
     image: r82anand/empservice
     depends_on:
       ikubedb:
@@ -31,5 +31,14 @@ services:
       - 8090:8090
     links:
       - ikubedb
+  ikubecache:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ../data/redis:/data
+    # entrypoint: redis-server --appendonly yes
+    restart: always
+    command: ["redis-server", "--appendonly", "yes"]
 
 

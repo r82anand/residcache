@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +22,7 @@ import com.sivadas.anand.service.EmployeeService;
 
 @RestController
 @CrossOrigin
+@EnableCaching
 public class EmployeeController {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
@@ -36,6 +39,7 @@ public class EmployeeController {
 		return employees;
 	}
 	
+	@Cacheable(value = "employees", key = "#empId")
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(method=RequestMethod.GET, value="/employee/{empId}", produces="application/json; charset=utf-8")
 	public Optional<Employee> getEmployee(@PathVariable("empId") Long empId) {
