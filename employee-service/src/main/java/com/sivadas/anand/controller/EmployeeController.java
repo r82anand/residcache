@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sivadas.anand.entity.Address;
 import com.sivadas.anand.entity.Employee;
 import com.sivadas.anand.service.EmployeeService;
 
@@ -44,4 +45,12 @@ public class EmployeeController {
 		return employeeById;
 	}
 	
+	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(method=RequestMethod.GET, value="/address", produces="application/json; charset=utf-8")
+	public List<Address> getAddresses() {
+		
+		List<Address> addresses = null;
+		addresses = employeeService.getAllAddress();
+		return addresses;
+	}
 }
