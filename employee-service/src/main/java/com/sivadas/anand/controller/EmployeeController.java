@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2018 Author(s). All rights reserved.
+ * 
+ * @Author	- Anand Sivadas
+ * @Date	- 3 Oct, 2018
+ * 
+ * 
+ */
 package com.sivadas.anand.controller;
 
 import java.util.List;
@@ -20,16 +28,26 @@ import com.sivadas.anand.entity.Address;
 import com.sivadas.anand.entity.Employee;
 import com.sivadas.anand.service.EmployeeService;
 
+/**
+ * The Class EmployeeController.
+ */
 @RestController
 @CrossOrigin
 @EnableCaching
 public class EmployeeController {
 
+	/** The logger. */
 	private static Logger LOGGER = LoggerFactory.getLogger(EmployeeController.class);
 
+	/** The employee service. */
 	@Autowired
 	private EmployeeService employeeService;
 	
+	/**
+	 * Gets the employees.
+	 *
+	 * @return the employees
+	 */
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(method=RequestMethod.GET, value="/employees", produces="application/json; charset=utf-8")
 	public List<Employee> getEmployees() {
@@ -39,6 +57,12 @@ public class EmployeeController {
 		return employees;
 	}
 	
+	/**
+	 * Gets the employee.
+	 *
+	 * @param empId the emp id
+	 * @return the employee
+	 */
 	@Cacheable(value = "employees", key = "#empId")
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(method=RequestMethod.GET, value="/employee/{empId}", produces="application/json; charset=utf-8")
@@ -49,6 +73,11 @@ public class EmployeeController {
 		return employeeById;
 	}
 	
+	/**
+	 * Gets the addresses.
+	 *
+	 * @return the addresses
+	 */
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(method=RequestMethod.GET, value="/address", produces="application/json; charset=utf-8")
 	public List<Address> getAddresses() {
